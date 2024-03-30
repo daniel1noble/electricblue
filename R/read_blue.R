@@ -14,8 +14,17 @@ read_blue <- function(path, ...) {
   # Read the file
   	 data <- readr::read_csv(path, col_names = c("datetime", "temperature"), ...)
 
-# Get some important information
-	tz <- with(data, data[which(datetime == "time zone"), "temperature"])
+# Get version
+		vers_logger <- as.numeric(with(data, data[which(datetime == "EnvLogger version"), "temperature"])) # logger version
+		vers_software <- as.numeric(with(data, data[which(datetime == "EnvLogger Viewer version"), "temperature"])) # logger version
+
+# Get some important information which will be kep as an attribute
+	    tz <- with(data, data[which(datetime == "time zone"), "temperature"]) # Time zone
+	  unit <- with(data, data[which(datetime == "temperature"), "temperature"]) # Unit
+	serial <- with(data, data[which(datetime == "serial number"), "temperature"]) # Serial number
+	   res <- as.numeric(with(data, data[which(datetime == "sampling resolution"), "temperature"])) # Resolution
+	lat <- as.numeric(with(data, data[which(datetime == "lat"), "temperature"])) # Latitude
+	long <- as.numeric(with(data, data[which(datetime == "long"), "temperature"])) # Longitude
 
 # Return the data
    		
