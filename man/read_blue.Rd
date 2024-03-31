@@ -20,5 +20,6 @@ Read an electric blue temperature logging file or directory of files
 \examples{
 \dontrun{
 data <- read_blue("./raw/04BC 0000 1C02 10-20240330 125652.csv")
+plot(data)
 }
 }
