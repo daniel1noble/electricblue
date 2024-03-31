@@ -24,8 +24,9 @@ read_blue <- function(path, ...) {
 	   data2 <- build_data(data, metadata, vers)
 
   # Set class
-		class(data2) <- c("blue", class(data2))
-  # Return the processes data
+	class(data2) <- c("blue", class(data2))
+
+  # Return the processed data
 	return(data2)
 }
 
