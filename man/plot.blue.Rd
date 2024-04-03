@@ -7,9 +7,11 @@
 \method{plot}{blue}(data, ...)
 }
 \arguments{
-\item{data}{A data frame containing the temperature data}
+\item{data}{A data frame or list of dataframes containing the temperature data}
 
 \item{...}{Additional arguments to be passed to the plot function}
+
+\item{rows}{The number of rows to use in the plot}
 }
 \value{
 A plot of the temperature data over time

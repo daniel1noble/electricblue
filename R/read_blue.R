@@ -2,6 +2,7 @@
 #' @title read_blue 
 #' @description Read an electric blue temperature logging file or directory of files
 #' @param dir A character string giving the path to the directory to read
+#' @param file	 A character string giving the path to the file to read. Defaults to NULL. If both \code{dir} and \code{file} are provided, \code{file} will be used. 
 #' @param ... Additional arguments passed to \code{\link{readr::read_csv}}
 #' @return A dataframe with columns \code{datetime}, \code{temperature}, and \code{unit}
 #' @export
@@ -11,8 +12,9 @@
 #' plot(data)
 #' }
 
-read_blue <- function(dir, ...) {
+read_blue <- function(dir, path = NULL, ...) {
   
+  if(is.null(path)){
   if( (substring(dir, nchar(dir)) == "/") == FALSE){
 		dir <- paste0(dir, "/")
 	}
@@ -22,6 +24,10 @@ read_blue <- function(dir, ...) {
 
   # Get full path
 	path <- paste0(dir, "/", files)
+	} else {
+		
+		path <- path
+	}
   
   if(length(path) == 0){
 	stop("No files found in directory")
