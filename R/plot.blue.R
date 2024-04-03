@@ -7,14 +7,7 @@
 #' @return A plot of the temperature data over time
 #' @export
 
-plot.blue  <- function(data, rows = 1, ...) {
-
-  if(is.list(data)){
-    par(mfrow = c(rows, length(data)))
-    for(i in 1:length(data)){
-      plot(temperature ~ datetime, data[[i]], type = "l", xlab = "Time and Date", ylab = "Temperature", main = unique(data[[i]]$name), ...)
-    }
-  } else {  
+plot.blue  <- function(data, ...) {
     plot(temperature ~ datetime, data, type = "l", xlab = "Time and Date", ylab = "Temperature", main = unique(data$name), ...)
-  }
+
 }
