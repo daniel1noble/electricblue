@@ -7,5 +7,13 @@
 #' @export
 
 plot.blue  <- function(data, ...) {
-  plot(temperature ~ datetime, data, type = "l", xlab = "Time and Date", ylab = "Temperature", main = unique(data$name), ...)
+
+  if(is.list(data)){
+    for(i in 1:length(data)){
+      mfrow <- c(1, length(data))
+      plot(temperature ~ datetime, data[[i]], xlab = "Time and Date", ylab = "Temperature", main = unique(data[[i]]$name), ...)
+    }
+  } else {  
+    plot(temperature ~ datetime, data, type = "l", xlab = "Time and Date", ylab = "Temperature", main = unique(data$name), ...)
+  }
 }
