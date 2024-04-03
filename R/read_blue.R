@@ -12,6 +12,11 @@
 #' }
 
 read_blue <- function(dir, ...) {
+  
+  if( (substring(dir, nchar(dir)) == "/") == FALSE){
+		dir <- paste0(dir, "/")
+	}
+  
   # Get files
 	files <- list.files(dir) 
 
