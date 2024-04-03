@@ -1,17 +1,28 @@
 
 #' @title read_blue 
 #' @description Read an electric blue temperature logging file or directory of files
-#' @param path A character string giving the path to the file or directory to read
+#' @param dir A character string giving the path to the directory to read
 #' @param ... Additional arguments passed to \code{\link{readr::read_csv}}
 #' @return A dataframe with columns \code{datetime}, \code{temperature}, and \code{unit}
 #' @export
 #' @examples
 #' \dontrun{
-#' data <- read_blue("./raw/04BC 0000 1C02 10-20240330 125652.csv")
+#' data <- read_blue("./raw")
 #' plot(data)
 #' }
 
-read_blue <- function(path, ...) {
+read_blue <- function(dir, ...) {
+  # Get files
+	files <- list.files(dir) 
+
+  # Get full path
+	path <- paste0(dir, "/", files)
+  
+  if(length(path) == 0){
+	stop("No files found in directory")
+  }
+
+  if(length(path) == 1){
   # Read the file
   	    data <- readr::read_csv(path, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...)
 
@@ -27,6 +38,25 @@ read_blue <- function(path, ...) {
   # Set class
 	class(data2) <- c("blue", class(data2))
 
+  } else {
+
+	# Read the files
+  	data <- lapply(path, function (x) readr::read_csv(x, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...))
+
+	# Get versions. Store these as attributes. These will be used if versions change file structure
+	    vers <- lapply(data, function(x) get_versions(x))
+
+  # Get some important information which will be kep as an attribute
+	metadata <- lapply(data, function(x) get_metadata(x))
+
+  # Create the dataframe
+	   data2 <- mapply(function(x, y, z) build_data(x, y, z), x = data, y = metadata, z = vers, SIMPLIFY = FALSE)
+
+  # Set class
+		data2 <- lapply(data2, function(x) list_class(x))
+
+  }
+  
   # Return the processed data
 	return(data2)
 }
@@ -52,7 +82,7 @@ get_versions <- function(data) {
 #' @return A list with elements \code{serial}, \code{name}, \code{lat}, \code{long}, \code{unit}, \code{resolution}, and \code{tz}
 #' @export
 get_metadata <- function(data){
-	tz <- as.character(str_extract_all(with(data, data[which(datetime == "time zone"), "temperature"]),"[A-Z]+", simplify = TRUE)) # Time zone
+	tz <- as.character(stringr::str_extract_all(with(data, data[which(datetime == "time zone"), "temperature"]),"[A-Z]+", simplify = TRUE)) # Time zone
   unit <- as.character(with(data, data[which(datetime == "temperature"), "temperature"])) # Unit
 serial <- as.character(with(data, data[which(datetime == "serial number"), "temperature"])) # Serial number
    res <- as.numeric(with(data, data[which(datetime == "sampling resolution"), "temperature"])) # Resolution
@@ -87,4 +117,15 @@ build_data <- function(data, metadata, vers){
 	 attr(data, "log_version") <- vers[["vers_logger"]]
 	 
 	return(data)
+}
+
+#' @title list_class
+#' @description Set the class of the data
+#' @param x A dataframe with columns \code{datetime}, \code{temperature}, and \code{unit}
+#' @return A dataframe with class \code{blue} for eache element of the list
+#' @export
+
+list_class <- function(x){
+	class(x) <- c("blue", class(x))
+  return(x)
 }

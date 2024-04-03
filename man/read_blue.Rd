@@ -4,10 +4,10 @@
 \alias{read_blue}
 \title{read_blue}
 \usage{
-read_blue(path, ...)
+read_blue(dir, ...)
 }
 \arguments{
-\item{path}{A character string giving the path to the file or directory to read}
+\item{dir}{A character string giving the path to the directory to read}
 
 \item{...}{Additional arguments passed to \code{\link{readr::read_csv}}}
 }
@@ -19,7 +19,7 @@ Read an electric blue temperature logging file or directory of files
 }
 \examples{
 \dontrun{
-data <- read_blue("./raw/04BC 0000 1C02 10-20240330 125652.csv")
+data <- read_blue("./raw")
 plot(data)
 }
 }
