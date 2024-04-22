@@ -4,14 +4,14 @@
 \alias{read_blue}
 \title{read_blue}
 \usage{
-read_blue(dir, path = NULL, ...)
+read_blue(dir, file = NULL, ...)
 }
 \arguments{
 \item{dir}{A character string giving the path to the directory to read}
 
-\item{...}{Additional arguments passed to \code{\link{readr::read_csv}}}
-
 \item{file}{A character string giving the path to the file to read. Defaults to NULL. If both \code{dir} and \code{file} are provided, \code{file} will be used.}
+
+\item{...}{Additional arguments passed to \code{\link{readr::read_csv}}}
 }
 \value{
 A dataframe with columns \code{datetime}, \code{temperature}, and \code{unit}

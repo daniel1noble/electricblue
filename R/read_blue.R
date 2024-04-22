@@ -12,9 +12,9 @@
 #' plot(data)
 #' }
 
-read_blue <- function(dir, path = NULL, ...) {
+read_blue <- function(dir, file = NULL, ...) {
   
-  if(is.null(path)){
+  if(is.null(file)){
   if( (substring(dir, nchar(dir)) == "/") == FALSE){
 		dir <- paste0(dir, "/")
 	}
@@ -22,20 +22,20 @@ read_blue <- function(dir, path = NULL, ...) {
   # Get files
 	files <- list.files(dir) 
 
-  # Get full path
-	path <- paste0(dir, "/", files)
+  # Get full read_blue
+	file <- paste0(dir, "/", files)
 	} else {
 		
-		path <- path
+		file <- file
 	}
   
-  if(length(path) == 0){
+  if(length(file) == 0){
 	stop("No files found in directory")
   }
 
-  if(length(path) == 1){
+  if(length(file) == 1){
   # Read the file
-  	    data <- readr::read_csv(path, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...)
+  	    data <- readr::read_csv(file, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...)
 
   # Get versions. Store these as attributes. These will be used if versions change file structure
 	    vers <- get_versions(data)
@@ -52,7 +52,7 @@ read_blue <- function(dir, path = NULL, ...) {
   } else {
 
 	# Read the files
-  	data <- lapply(path, function (x) readr::read_csv(x, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...))
+  	data <- lapply(file, function (x) readr::read_csv(x, col_names = c("datetime", "temperature"), show_col_types = FALSE, ...))
 
 	# Get versions. Store these as attributes. These will be used if versions change file structure
 	    vers <- lapply(data, function(x) get_versions(x))
